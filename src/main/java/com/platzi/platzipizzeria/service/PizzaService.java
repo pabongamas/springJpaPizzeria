@@ -16,25 +16,34 @@ public class PizzaService {
     // private final JdbcTemplate jdbcTemplate;
     private final PizzaRepository pizzaRepository;
 
-
     // @Autowired
     // public PizzaService(JdbcTemplate jdbcTemplate) {
-    //     this.jdbcTemplate = jdbcTemplate;
+    // this.jdbcTemplate = jdbcTemplate;
     // }
 
-       @Autowired
+    @Autowired
     public PizzaService(PizzaRepository pizzaRepository) {
         this.pizzaRepository = pizzaRepository;
     }
 
-    public List<PizzaEntity> getAll(){
-        // return this.jdbcTemplate.query("SELECT * FROM pizza where available='f'", new BeanPropertyRowMapper<>(PizzaEntity.class));
+    public List<PizzaEntity> getAll() {
+        // return this.jdbcTemplate.query("SELECT * FROM pizza where available='f'", new
+        // BeanPropertyRowMapper<>(PizzaEntity.class));
         return this.pizzaRepository.findAll();
     }
 
-    public PizzaEntity get(Long idPizza){
+    public PizzaEntity get(Long idPizza) {
         return this.pizzaRepository.findById(idPizza).orElse(null);
     }
 
-    
+    public PizzaEntity save(PizzaEntity pizzaEntity) {
+        return this.pizzaRepository.save(pizzaEntity);
+    }
+    public boolean exists(Long idPizza){
+        return this.pizzaRepository.existsById(idPizza);
+    }
+    public void delete(Long idPizza){
+        this.pizzaRepository.deleteById(idPizza);
+    }
+
 }
