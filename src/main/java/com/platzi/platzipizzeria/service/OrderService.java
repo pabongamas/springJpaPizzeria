@@ -19,6 +19,7 @@ public class OrderService {
 
     public List<OrderEntity> getAll(){
         List<OrderEntity> orders=this.orderRepository.findAll();
+        // aca se puede ver la informacion asi le haya colocado el fetch lazy 
         orders.forEach(o->System.out.println(o.getCustomer().getName()));
         return orders;
     }

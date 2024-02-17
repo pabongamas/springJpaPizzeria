@@ -31,9 +31,21 @@ public class PizzaService {
         // BeanPropertyRowMapper<>(PizzaEntity.class));
         return this.pizzaRepository.findAll();
     }
+    public List<PizzaEntity> getAvailable(){
+        return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    }
+    public List<PizzaEntity> getWhit(String ingredient){
+        return this.pizzaRepository.findAllByAvailableTrueAndDescriptionContainingIgnoreCase(ingredient);
+    }
+    public List<PizzaEntity> getWhitOut(String ingredient){
+        return this.pizzaRepository.findAllByAvailableTrueAndDescriptionNotContainingIgnoreCase(ingredient);
+    }
 
     public PizzaEntity get(Long idPizza) {
         return this.pizzaRepository.findById(idPizza).orElse(null);
+    }
+    public PizzaEntity getByName(String name) {
+        return this.pizzaRepository.findAllByAvailableTrueAndNameIgnoreCase(name);
     }
 
     public PizzaEntity save(PizzaEntity pizzaEntity) {
