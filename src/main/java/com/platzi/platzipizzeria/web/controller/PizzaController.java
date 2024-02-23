@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
@@ -47,6 +46,12 @@ public class PizzaController {
     @GetMapping("/without/{ingredient}")
     public ResponseEntity<List<PizzaEntity>> getWithOut(@PathVariable("ingredient") String ingredient) {
         List<PizzaEntity> pizzas = this.pizzaService.getWhitOut(ingredient);
+        return ResponseEntity.ok(pizzas);
+    }
+
+    @GetMapping("/cheapest/{price}")
+    public ResponseEntity<List<PizzaEntity>> getCheapestPizzas(@PathVariable("price") double price) {
+        List<PizzaEntity> pizzas = this.pizzaService.getCheapest(price);
         return ResponseEntity.ok(pizzas);
     }
 
