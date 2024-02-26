@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
@@ -42,10 +43,16 @@ public class PizzaService {
         Pageable pageRequest=PageRequest.of(page,elements);
         return this.pizzaPagSortRepository.findAll(pageRequest);
     }
-    public List<PizzaEntity> getAvailable(){
-        Integer pizzasVegans=this.pizzaRepository.countByVeganTrue();
-        System.out.println(pizzasVegans);
-        return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    // public List<PizzaEntity> getAvailable(){
+    //     Integer pizzasVegans=this.pizzaRepository.countByVeganTrue();
+    //     System.out.println(pizzasVegans);
+    //     return this.pizzaRepository.findAllByAvailableTrueOrderByPrice();
+    // }
+      public Page<PizzaEntity> getAvailable(int page,int elements,String sortBy,String sortDirection){
+
+        Sort sort=Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageRequest=PageRequest.of(page,elements,sort);
+        return this.pizzaPagSortRepository.findByAvailableTrue(pageRequest);
     }
     public List<PizzaEntity> getWhit(String ingredient){
         return this.pizzaRepository.findAllByAvailableTrueAndDescriptionContainingIgnoreCase(ingredient);
