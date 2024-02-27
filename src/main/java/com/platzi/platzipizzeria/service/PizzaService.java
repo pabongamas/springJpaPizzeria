@@ -8,10 +8,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
 import com.platzi.platzipizzeria.persistence.repository.PizzaPagSortRepository;
 import com.platzi.platzipizzeria.persistence.repository.PizzaRepository;
+import com.platzi.platzipizzeria.service.dto.UpdatePizzaPriceDto;
+import com.platzi.platzipizzeria.service.exception.EmailApiException;
 
 
 @Service
@@ -80,6 +83,18 @@ public class PizzaService {
     }
     public void delete(Long idPizza){
         this.pizzaRepository.deleteById(idPizza);
+    }
+
+    //si ocurre alguna excepcion de la clase email api exception class ,no hace rollback
+    // si ocurre de otra clase si hace rollback
+    @Transactional(noRollbackFor = EmailApiException.class)
+    public void updatePrice(UpdatePizzaPriceDto dto){
+        this.pizzaRepository.updatePrice(dto);
+        this.sendEmail();
+    }
+
+    private void sendEmail(){
+        throw new EmailApiException();
     }
 
 }

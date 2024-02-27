@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.platzi.platzipizzeria.persistence.entity.OrderEntity;
+import com.platzi.platzipizzeria.persistence.projection.OrderSummary;
 import com.platzi.platzipizzeria.persistence.repository.OrderRepository;
 
 import java.time.LocalDateTime;
@@ -48,5 +49,7 @@ public class OrderService {
         List<OrderEntity> customerOrders=this.orderRepository.findCustomerOrders(idCustomer);
         return customerOrders;
     }
-
+    public OrderSummary getSummary(int orderId){
+        return this.orderRepository.findSummary(orderId);
+    }
 }

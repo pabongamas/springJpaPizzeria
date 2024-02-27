@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.platzi.platzipizzeria.persistence.entity.OrderEntity;
+import com.platzi.platzipizzeria.persistence.projection.OrderSummary;
 import com.platzi.platzipizzeria.service.OrderService;
 
 @RestController
@@ -37,6 +38,11 @@ public class OrderController {
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<OrderEntity>> getOutsideOrders(@PathVariable("id") String idCustomer){
         return ResponseEntity.ok(this.orderService.getCustomerOrders(idCustomer));
+    }
+
+    @GetMapping("/summary/{id}")
+    public ResponseEntity<OrderSummary> getSummary(@PathVariable("id") int id){
+        return ResponseEntity.ok(this.orderService.getSummary(id));
     }
 
     

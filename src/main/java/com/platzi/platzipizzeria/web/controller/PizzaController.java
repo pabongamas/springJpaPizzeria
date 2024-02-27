@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.platzi.platzipizzeria.persistence.entity.PizzaEntity;
 import com.platzi.platzipizzeria.service.PizzaService;
+import com.platzi.platzipizzeria.service.dto.UpdatePizzaPriceDto;
 
 @RestController
 @RequestMapping("/pizzas")
@@ -98,5 +99,15 @@ public class PizzaController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/price")
+    public ResponseEntity<Void> updatePrice(@RequestBody UpdatePizzaPriceDto dto) {
+        if (this.pizzaService.exists(dto.getPizzaId())) {
+            this.pizzaService.updatePrice(dto);
+            return ResponseEntity.ok().build();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 }
