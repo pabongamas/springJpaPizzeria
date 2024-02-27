@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.platzi.platzipizzeria.persistence.entity.OrderEntity;
 import com.platzi.platzipizzeria.persistence.projection.OrderSummary;
 import com.platzi.platzipizzeria.service.OrderService;
+import com.platzi.platzipizzeria.service.dto.RandomOrderDto;
 
 @RestController
 @RequestMapping("/orders")
@@ -45,5 +48,9 @@ public class OrderController {
         return ResponseEntity.ok(this.orderService.getSummary(id));
     }
 
+    @PostMapping("/random")
+    public ResponseEntity<Boolean> randomOrder(@RequestBody RandomOrderDto dto){
+        return ResponseEntity.ok(this.orderService.saveRandomOrder(dto));
+    }
     
 }

@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.platzi.platzipizzeria.persistence.entity.OrderEntity;
 import com.platzi.platzipizzeria.persistence.projection.OrderSummary;
 import com.platzi.platzipizzeria.persistence.repository.OrderRepository;
+import com.platzi.platzipizzeria.service.dto.RandomOrderDto;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
@@ -51,5 +53,10 @@ public class OrderService {
     }
     public OrderSummary getSummary(int orderId){
         return this.orderRepository.findSummary(orderId);
+    }
+
+    @Transactional
+    public boolean saveRandomOrder(RandomOrderDto randomOrderDto){
+        return this.orderRepository.saveRandomOrder(randomOrderDto.getIdCustomer(),randomOrderDto.getMethod());
     }
 }
