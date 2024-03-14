@@ -29,6 +29,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/pizzas/**").hasAnyRole("ADMIN","CUSTOMER")
                         .requestMatchers(HttpMethod.POST,"/pizzas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                        // primero aplica el permiso de random_order , porque el has rolse si esta de primera no la va a autorizar
+                        .requestMatchers("/orders/random").hasAuthority("random_order")
                         .requestMatchers("/orders/**").hasRole("ADMIN")
                         .anyRequest().authenticated();
                 }
@@ -44,23 +46,25 @@ public class SecurityConfig {
     //esto se hace para gestionar usuariores en memoria , le pasamos el nombre de user , la password con el tipo de 
     // encode para encryptar, para el rol ADMIN ,SE PRUEBA CON LA RUTA  http://localhost:8090/pizzeria/api/orders SI NO SE LE PASA 
     // BASIC AUTH CON LA INFO DEL USUARIO EN MEMORIA  VA A SALIR NO AUTORIZADO 
-    @Bean
-    public UserDetailsService memoryUsers(){
-        UserDetails admin= User.builder()
-            .username("admin")
-            .password(passwordEncoder().encode("admin"))
-            .roles("ADMIN")
-            .build();
+    // @Bean
+    // public UserDetailsService memoryUsers(){
+    //     UserDetails admin= User.builder()
+    //         .username("admin")
+    //         .password(passwordEncoder().encode("admin"))
+    //         .roles("ADMIN")
+    //         .build();
 
 
-            UserDetails customer= User.builder()
-            .username("customer")
-            .password(passwordEncoder().encode("customer123"))
-            .roles("CUSTOMER")
-            .build();
+    //         UserDetails customer= User.builder()
+    //         .username("customer")
+    //         .password(passwordEncoder().encode("customer123"))
+    //         .roles("CUSTOMER")
+    //         .build();
 
-            return new InMemoryUserDetailsManager(admin,customer);
-    }
+    //         return new InMemoryUserDetailsManager(admin,customer);
+    // }
+
+    // se comenta porque se hace el uso por medio de el servicio userSecurityService
 
     @Bean
     public PasswordEncoder passwordEncoder(){
