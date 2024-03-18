@@ -50,6 +50,10 @@ public class UserSecurityService implements UserDetailsService{
         if("ADMIN".equals(role) || "CUSTOMER".equals(role)){
             return new String[] {"random_order"};
         }
+        if("CHEF".equals(role)){
+            return new String[] {"getOrder","random_order"};
+
+        }
         return new String[] {};
     }
 

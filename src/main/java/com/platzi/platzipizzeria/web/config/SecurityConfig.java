@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
                         // primero aplica el permiso de random_order , porque el has rolse si esta de primera no la va a autorizar
                         .requestMatchers("/orders/random").hasAuthority("random_order")
+                        .requestMatchers(HttpMethod.GET,"/orders").hasAuthority("getOrder")
                         .requestMatchers("/orders/**").hasRole("ADMIN")
                         .anyRequest().authenticated();
                 }
