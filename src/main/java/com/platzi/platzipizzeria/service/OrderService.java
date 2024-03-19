@@ -3,6 +3,7 @@ package com.platzi.platzipizzeria.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,8 @@ public class OrderService {
         return this.orderRepository.findAllByMethodIn(methods);
     }
 
+    //ESPECIFICO QUE SOLO LOS QUE TENGAN ROLE ADMIN A PARTIR DE LA SECURITY CONFIG PUEDAN INGRESAR A ESTE METODO 
+    @Secured("ROLE_ADMIN")
     public List<OrderEntity> getCustomerOrders(String idCustomer){
         List<OrderEntity> customerOrders=this.orderRepository.findCustomerOrders(idCustomer);
         return customerOrders;

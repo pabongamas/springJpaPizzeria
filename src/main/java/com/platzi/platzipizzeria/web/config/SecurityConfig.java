@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -15,6 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+//con esto habilito la validacion de roles por metdio de antocaciones en los metodos de los servicios ,esos irian con la anotacion @Secured
+@EnableMethodSecurity(securedEnabled =true )
 public class SecurityConfig {
     //establece la configuracion inicial por defectro de  la aplicacion ,en esta estamos haciendo un filtro de segurdad en el que interceptamos
     // las http request y autorizamos cualquiere peticion el cual ese autenticado , esta autenticacion aca es la Basic 
@@ -26,6 +29,7 @@ public class SecurityConfig {
                 customizeRequests
                         // .anyRequest()
                         // .authenticated()
+                        .requestMatchers("/customers/**").hasAnyRole("ADMIN","CUSTOMER")
                         .requestMatchers(HttpMethod.GET,"/pizzas/**").hasAnyRole("ADMIN","CUSTOMER")
                         .requestMatchers(HttpMethod.POST,"/pizzas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
