@@ -58,6 +58,7 @@ public class JwtFilter extends OncePerRequestFilter {
         
 
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        System.out.println(authenticationToken);
         //este filter chain es diferente de los de arribar porque ya se cargo algo en el contexto de seguridad , entoncs el resuelve positivamente  
         filterChain.doFilter(request, response);
     }

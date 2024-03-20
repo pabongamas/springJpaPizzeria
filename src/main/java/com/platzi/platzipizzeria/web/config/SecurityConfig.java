@@ -1,5 +1,6 @@
 package com.platzi.platzipizzeria.web.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 //con esto habilito la validacion de roles por metdio de antocaciones en los metodos de los servicios ,esos irian con la anotacion @Secured
@@ -24,6 +28,15 @@ public class SecurityConfig {
     //establece la configuracion inicial por defectro de  la aplicacion ,en esta estamos haciendo un filtro de segurdad en el que interceptamos
     // las http request y autorizamos cualquiere peticion el cual ese autenticado , esta autenticacion aca es la Basic 
     // donde se le envia el usuario,este dato lo genera spring una vez se ejecute la aplicacion en desarrollo
+
+    private final JwtFilter jwtFilter;
+    
+    @Autowired
+    public SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -45,7 +58,10 @@ public class SecurityConfig {
             )
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
-            .httpBasic(Customizer.withDefaults());
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // .httpBasic(Customizer.withDefaults())
+            //agregar filtro de autehnticacion por JWT PRINCIPALMENTE
+            .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
     }
