@@ -51,6 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         // 3. cargar el usuario del UserDetailsService
         String username=this.jwtUtil.getUsername(jwt);
+        System.out.println("aca va el "+username);
         User user=(User) this.userDetailsService.loadUserByUsername(username);
 
         // 4.cargar al usuario en el contexto de seguridad.
@@ -60,7 +61,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        System.out.println(authenticationToken);
         //este filter chain es diferente de los de arribar porque ya se cargo algo en el contexto de seguridad , entoncs el resuelve positivamente  
         filterChain.doFilter(request, response);
     }
